@@ -26,7 +26,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::group(['middleware' => 'web'], function (){
-    Route::match(['get','post'], '/', [IndexController::class , 'execute']);
+    Route::match(['get','post'], '/', [IndexController::class , 'execute'])->name('home');
     Route::post( '/contact-form', [IndexController::class , 'contactForm'])->name('contact.form');
     Route::get( '/page/{alias}', [PageController::class, 'execute'])->name('page');
 });
@@ -50,3 +50,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function (){
         Route::match(['get','post','delete'], '/edit/{service}', [ServiceEditController::class, 'execute']);
     });
 });
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
